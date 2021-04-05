@@ -1,0 +1,3 @@
+# ClimateCoinBot
+Hey, thats my first bot...
+Dont forget to check it out on Twitter @ClimateCoin_Bot :)
