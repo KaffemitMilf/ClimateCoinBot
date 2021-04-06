@@ -1,1 +1,0 @@
-<function sender_id at 0x03891D60>,<function sender_id at 0x04101D60>,

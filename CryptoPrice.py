@@ -1,6 +1,7 @@
 from requests import Request, Session
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import json
+import os
 
 
 #eos:EOS
@@ -16,7 +17,7 @@ def getPrice(coin: str):
     }
     headers = {
         'Accepts': 'application/json',
-        'X-CMC_PRO_API_KEY': "xxx",
+        'X-CMC_PRO_API_KEY': f"{os.getenv('CAP_KEY')}",
     }
 
     session = Session()
