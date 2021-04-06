@@ -79,6 +79,7 @@ def hashtag():
 def tweetCrypto():
     var = TextofTweet()
     while len(var) > 280:
+        time.sleep(60)
         var = TextofTweet()
     t.statuses.update(status= var)
 def usedGreetings():
