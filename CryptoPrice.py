@@ -9,6 +9,7 @@ import os
 #Cardano:ADA
 #Iota:MIOTA
 #Nano:Nano
+#Alles wie früher
 def getPrice(coin: str):
     url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest'
     parameters = {
