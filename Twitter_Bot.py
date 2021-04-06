@@ -28,10 +28,10 @@ takenGreetingsEnd = []
 takenhashtags = []
 #twitter api
 t = Twitter(auth=OAuth(
-token = os.getenv("token"),
-token_secret = os.getenv("token_secret"),
-consumer_key = os.getenv("consumer_key"),
-consumer_secret= os.getenv("consumer_secret")))
+token = os.getenv("TWITTER_TOKEN"),
+token_secret = os.getenv("TOKEN_SECRET"),
+consumer_key = os.getenv("CONSUMER_KEY"),
+consumer_secret= os.getenv("CONSUMER_SECRET")))
 
 #tweet current twitter-price + extra-text
 def TextofTweet():

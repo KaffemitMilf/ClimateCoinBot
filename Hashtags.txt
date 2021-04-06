@@ -1,2 +1,0 @@
-Crypto,Cryptocurrency,Etherum,Blockchain,Token,BTC,ETH,ETC,BNB,ZEC,EOS,ADA,XRP,MIOTA,DASH,DODGE,NANO,CARDANO,LTC,IOTA,Priceupdate,Altcoins,Innovation, 
-Climate,Climatechange,CO2,Energy,Earth,ClimateCrisis,Mining,Cryptomining,Technology,Cryptonews,Cryptocurrencies
