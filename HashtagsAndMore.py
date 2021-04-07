@@ -7,9 +7,10 @@ datetime_DE = datetime.now(tz_DE)
 time = datetime_DE.strftime("%H:%M:%S")
 
 
-def timeH():
+def timeH() -> int:
     datetime_DE = datetime.now(tz_DE)
     return int(datetime_DE.strftime("%H"))
+
 
 hashtags = ['Crypto', 'Cryptocurrency', 'Etherum', 'Blockchain', 'Token', 'BTC', 'ETH', 'ETC', 'BNB', 'ZEC', 'EOS', 'ADA', 'XRP', 'MIOTA', 'DASH', 'DODGE', 'NANO', 'CARDANO', 'LTC', 'IOTA', 'Priceupdate', 'Altcoins', 'Innovation',
             'Climate', 'Climatechange', 'CO2', 'Energy', 'Earth', 'ClimateCrisis', 'Mining', 'Cryptomining', 'Technology', 'Cryptonews', 'Cryptocurrencies']
@@ -45,27 +46,27 @@ list_hello_gn = ["Good evening, Mr. Graham Wu!",
 
 list_hello_normal = ["Tweet goes yeet!",
                      "Crypto!, Crypto!, Crypto!",
-                     "Grab a weisswurst and sit you next to me!",
+                     "Grab a Weisswurst and sit you next to me!",
                      "Nice to meet you here :)",
                      "I hope your day is nice!",
                      "Hey, beast! Make your earnings be increased!",
                      "Today will be the best! Your crypto wallet will worry about the rest!",
-                     "Hoping your day will be bright like bitcoin price till 2009"]
+                     "Hoping your day will be bright like Bitcoin price till 2009"]
 
 
-def randomTextBegin():  # 8,14,18,22
+def randomTextBegin() -> str:  # 8,14,18,22
     # gm
     if timeH() <= 8:
         return random.choice(list_hello_gm)
     # gn
     elif timeH() >= 20:
-      return random.choice(list_hello_gn)  
+        return random.choice(list_hello_gn)
     # normalDay
     else:
         return random.choice(list_hello_normal)
 
 
-def listEnd():
+def listEnd() -> str:
     # gm
     if timeH() <= 8:
         return random.choice(list_end_gm)
@@ -77,7 +78,5 @@ def listEnd():
         return random.choice(list_end_normal)
 
 
-def listhashtag():
+def listhashtag() -> str:
     return random.choice(hashtags)
-
-
