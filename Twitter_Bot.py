@@ -43,7 +43,7 @@ def TextBegin():
 
     randomnum = randomTextBegin()
     while randomnum in takenGreetings:
-        randomnum = random.choice(randomTextBegin())
+        randomnum = randomTextBegin()
 
     takenGreetings.append(randomnum)
     return randomnum
@@ -52,7 +52,8 @@ def TextBegin():
 def TextEnd():
     randomnum = listEnd()
     while randomnum in takenGreetingsEnd:
-        randomnum = random.choice(listEnd())
+        randomnum = listEnd()
+
     takenGreetingsEnd.append(randomnum)
     return randomnum
 
@@ -82,7 +83,7 @@ schedule.every().day.at("08:00").do(tweetCrypto)  # 8
 schedule.every().day.at("14:00").do(tweetCrypto)  # 14
 schedule.every().day.at("18:00").do(tweetCrypto)  # 18
 schedule.every().day.at("22:00").do(tweetCrypto)  # 22
-schedule.every().monday.do(usedGreetings)
+schedule.every().monday.do(clearGreetings)
 
 if __name__ == '__main__':
     while True:
