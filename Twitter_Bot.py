@@ -1,39 +1,21 @@
 import time
 from twitter import *
-import random
 from CryptoPrice import getPrice
-import os
-import smtplib
-import datetime
-from datetime import datetime
-import pytz
 import os
 from HashtagsAndMore import randomTextBegin, listEnd, listhashtag
 import schedule
-tz_DE = pytz.timezone('Europe/Berlin')
-datetime_DE = datetime.now(tz_DE)
-#time = datetime_DE.strftime("%H:%M:%S")
- #define later needed variables
-rnumber = random.randint(1,100)
-def timeMin():
-    datetime_DE = datetime.now(tz_DE)
-    return int(datetime_DE.strftime("%M"))
-def timeH():
-    datetime_DE = datetime.now(tz_DE)
-    return int(datetime_DE.strftime("%H"))
 
-#list of taken greetings
-takenGreetings = []
-takenGreetingsEnd = []
-takenhashtags = []
-#twitter api
+
+# twitter api
 t = Twitter(auth=OAuth(
-token = os.getenv("TWITTER_TOKEN"),
-token_secret = os.getenv("TOKEN_SECRET"),
-consumer_key = os.getenv("CONSUMER_KEY"),
-consumer_secret= os.getenv("CONSUMER_SECRET")))
+    token=os.getenv("TWITTER_TOKEN"),
+    token_secret=os.getenv("TOKEN_SECRET"),
+    consumer_key=os.getenv("CONSUMER_KEY"),
+    consumer_secret=os.getenv("CONSUMER_SECRET")))
 
-#tweet current twitter-price + extra-text
+# tweet current twitter-price + extra-text
+
+
 def TextofTweet():
 
     text = TextBegin()+f"""
@@ -46,57 +28,63 @@ EOS: {getPrice("EOS")}$
 CARDANO: {getPrice("ADA")}$
 IOTA: {getPrice("MIOTA")}$
 NANO: {getPrice("NANO")}$\n
-""" +TextEnd() + "\n" +hashtag()
+""" + TextEnd() + "\n" + hashtag()
 
     return text
 
-#random twitter-text
+
+# random twitter-text
+takenGreetings = []
+takenGreetingsEnd = []
+takenhashtags = []
+
+
 def TextBegin():
 
+    randomnum = randomTextBegin()
+    while randomnum in takenGreetings:
         randomnum = random.choice(randomTextBegin())
-        while randomnum in takenGreetings:
-            randomnum = random.choice(randomTextBegin())
 
-        takenGreetings.append(randomnum)
-        return randomnum
+    takenGreetings.append(randomnum)
+    return randomnum
 
 
 def TextEnd():
+    randomnum = listEnd()
+    while randomnum in takenGreetingsEnd:
         randomnum = random.choice(listEnd())
-        while randomnum in takenGreetingsEnd:
-            randomnum = random.choice(listEnd())
-        takenGreetingsEnd.append(randomnum)
-        return randomnum
+    takenGreetingsEnd.append(randomnum)
+    return randomnum
+
 
 def hashtag():
-    randomnum = random.choice(listhashtag())
+    randomnum = listhashtag()
     while randomnum in takenGreetings:
-        randomnum = random.choice(listhashtag())
+        randomnum = listhashtag()
 
     takenhashtags.append(randomnum)
     return randomnum
 
+
 def tweetCrypto():
     var = TextofTweet()
-    while len(var) > 280:
-        time.sleep(60)
-        var = TextofTweet()
-    t.statuses.update(status= var)
-def usedGreetings():
+    if len(var) < 280:
+        print("ClimateCoin > The Tweet to Post is over 280 Charackters, so don't posting that!")
+        return
+    t.statuses.update(status=var)
+
+
+def clearGreetings():
     takenGreetings, takenGreetings, takenhashtags = []
 
-schedule.every().day.at("08:00").do(tweetCrypto) #8
-schedule.every().day.at("14:00").do(tweetCrypto) #14
-schedule.every().day.at("18:00").do(tweetCrypto) #18
-schedule.every().day.at("22:00").do(tweetCrypto) #22
+
+schedule.every().day.at("08:00").do(tweetCrypto)  # 8
+schedule.every().day.at("14:00").do(tweetCrypto)  # 14
+schedule.every().day.at("18:00").do(tweetCrypto)  # 18
+schedule.every().day.at("22:00").do(tweetCrypto)  # 22
 schedule.every().monday.do(usedGreetings)
 
-
-while True:
-    schedule.run_pending()
-    time.sleep(10)
-
-
-
-
-
+if __name__ == '__main__':
+    while True:
+        schedule.run_pending()
+        time.sleep(30)
