@@ -24,3 +24,4 @@ def getPrice(coin: str) -> dict:
         return round(data["data"][coin]["quote"]["USD"]["price"], 2)
     except (ConnectionError, Timeout, TooManyRedirects) as e:
         print(e)
+
