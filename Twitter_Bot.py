@@ -4,6 +4,7 @@ from CryptoPrice import getPrice
 import os
 from HashtagsAndMore import randomTextBegin, listEnd, listhashtag
 import schedule
+import matplotlib.pyplot as plt
 
 
 # twitter api
@@ -18,7 +19,7 @@ t = Twitter(auth=OAuth(
 
 def TextofTweet():
 
-    text = TextBegin()+f"""
+    text =f"""{TextBegin()}
 Here is the current Crypto value:  
 #Bitcoin and #Ethereum as reference\n
 BITCOIN: {getPrice("BTC")}$
@@ -28,7 +29,7 @@ EOS: {getPrice("EOS")}$
 CARDANO: {getPrice("ADA")}$
 IOTA: {getPrice("MIOTA")}$
 NANO: {getPrice("NANO")}$\n
-""" + TextEnd() + "\n" + hashtag()
+{TextEnd()}}\n{hashtag()}"""
 
     return text
 
