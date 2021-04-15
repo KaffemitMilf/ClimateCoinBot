@@ -1,4 +1,33 @@
 import matplotlib.pyplot as plt
+import sqlite3
+from CryptoPrice import getPrice
+
+conn = sqlite3.connect("CryptoPrice.db")
+cryptoList = ["ada", "eos", "miota", "nano", "xrp"]
+c = conn.cursor()
+
+#Create table if not already exists
+def createTable():
+    for i in cryptoList:
+        c.execute(f"""CREATE TABLE IF NOT EXISTS {i} (
+        price INT
+        )""")
+    conn.commit()
+    conn.close()
+
+def addPrices():
+    # get data and add to db
+    for i in cryptoList:
+        price = [(getPrice(i.upper()))]
+        c.execute(f"INSERT INTO {i} VALUES (price)")
+    conn.commit()
+    conn.close()
+
+def getDataWeek(Coin) -> list: #returns list with tuples
+    c.execute(f"SELECT * FROM {Coin} LIMIT 7")
+    return c.fetchmany((7))
+    conn.close()
+
 
 
 def Visualition(y1: list, y2: list, y3: list, y4: list, y5: list):

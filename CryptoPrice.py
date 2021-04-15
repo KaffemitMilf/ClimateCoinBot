@@ -25,3 +25,4 @@ def getPrice(coin: str) -> dict:
     except (ConnectionError, Timeout, TooManyRedirects) as e:
         print(e)
 
+

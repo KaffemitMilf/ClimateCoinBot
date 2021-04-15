@@ -29,7 +29,7 @@ EOS: {getPrice("EOS")}$
 CARDANO: {getPrice("ADA")}$
 IOTA: {getPrice("MIOTA")}$
 NANO: {getPrice("NANO")}$\n
-{TextEnd()}}\n{hashtag()}"""
+{TextEnd()}\n{hashtag()}"""
 
     return text
 
