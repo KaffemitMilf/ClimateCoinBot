@@ -1,3 +1,4 @@
+DataVisualization.py.old
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -5,6 +6,12 @@ __pycache__/
 
 # C extensions
 *.so
+
+#Databases
+CryptoPrice.db
+
+# Outputs
+grow.png
 
 # Distribution / packaging
 .Python

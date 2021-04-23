@@ -79,11 +79,8 @@ def tweetCrypto():
 def clearGreetings():
     takenGreetings, takenGreetings, takenhashtags = []
 
-
-schedule.every().day.at("08:00").do(tweetCrypto)  # 8
-schedule.every().day.at("14:00").do(tweetCrypto)  # 14
-schedule.every().day.at("18:00").do(tweetCrypto)  # 18
-schedule.every().day.at("22:00").do(tweetCrypto)  # 22
+schedule.every().day.at("12:00").do(tweetCrypto)  # 8
+schedule.every().day.at("20:00").do(tweetCrypto)  # 18
 schedule.every().monday.do(clearGreetings)
 
 if __name__ == '__main__':
