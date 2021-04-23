@@ -22,11 +22,11 @@ def TextofTweet():
     text =f"""{TextBegin()}
 Here is the current Crypto value:  
 #Bitcoin and #Ethereum as reference\n
-BITCOIN: {getPrice("BTC")}$
-ETHEREUM {getPrice("ETH")}$
-RIPPLE: {getPrice("XRP")}$
+BTC: {getPrice("BTC")}$
+ETH: {getPrice("ETH")}$
+XRP: {getPrice("XRP")}$
 EOS: {getPrice("EOS")}$
-CARDANO: {getPrice("ADA")}$
+ADA: {getPrice("ADA")}$
 IOTA: {getPrice("MIOTA")}$
 NANO: {getPrice("NANO")}$\n
 {TextEnd()}\n{hashtag()}"""
