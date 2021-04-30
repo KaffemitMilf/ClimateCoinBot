@@ -1,9 +1,6 @@
 import matplotlib.pyplot as plt
 import sqlite3
 from CryptoPrice import getPrice
-from pymongo import MongoClient
-import os
-
 
 def Visualition():
     cluster = MongoClient(
@@ -72,11 +69,11 @@ def Visualition():
 
     # adding graphs to the digram
     # ,marker = 'o', markerfacecolor = 'r'
-    plt.plot(x, axe_1, label="XRP", color="lightblue")
+    plt.plot(x, axe_5, label="XRP", color="lightblue")
     plt.plot(x, axe_2, label="EOS", color="grey")
-    plt.plot(x, axe_3, label="ADA", color="darkgreen")
-    plt.plot(x, axe_4, label="MIOTA", color="purple")
-    plt.plot(x, axe_5, label="NANO", color="blue")
+    plt.plot(x, axe_1, label="ADA", color="darkgreen")
+    plt.plot(x, axe_3, label="MIOTA", color="purple")
+    plt.plot(x, axe_4, label="NANO", color="blue")
 
     # naming axis
     plt.xlabel("Days", fontweight="bold", color="#F5F8FA")
