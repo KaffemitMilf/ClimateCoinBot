@@ -5,6 +5,7 @@ import os
 from HashtagsAndMore import randomTextBegin, listEnd, listhashtag
 import schedule
 import matplotlib.pyplot as plt
+import DataVisualization as DV
 
 
 # twitter api
@@ -14,24 +15,68 @@ t = Twitter(auth=OAuth(
     consumer_key=os.getenv("CONSUMER_KEY"),
     consumer_secret=os.getenv("CONSUMER_SECRET")))
 
+tz_DE = pytz.timezone('Europe/Berlin')
+datetime_DE = datetime.now(tz_DE)
 # tweet current twitter-price + extra-text
 
 
 def TextofTweet():
+    if int(datetime_DE.strftime("%H")) == 12:
+        cluster = MongoClient(
+        'mongodb+srv://Fynn:MSJIS0b9WfKtWqq2@cluster0.jqir5.mongodb.net/Coins?retryWrites=true&w=majority')
+        db = cluster['Coins']
+        ada_db = db['ada']
+        eos_db = db['eos']
+        miota_db = db['miota']
+        nano_db = db['nano']
+        xrp_db = db['xrp']
 
-    text =f"""{TextBegin()}
+        BTC = getPrice("BTC")
+        ETH = getPrice("ETH")
+        XRP = getPrice("XRP")
+        EOS = getPrice("EOS")
+        ADA = getPrice("ADA")
+        IOTA = getPrice("MIOTA")
+        NANO = getPrice("NANO")
+
+        ada_db.insertOne({'_id': (ada_db.find({}).sort({_id:-1}).limit(1) + 1), 'value': ADA})
+        eos_db.insertOne({'_id': (eos_db.find({}).sort({_id:-1}).limit(1) + 1), 'value': EOS})
+        miota_db.insertOne({'_id': (miota_db.find({}).sort({_id:-1}).limit(1) + 1), 'value': IOTA})
+        nano_db.insertOne({'_id': (nano_db.find({}).sort({_id:-1}).limit(1) + 1), 'value': NANO})
+        xrp_db.insertOne({'_id': (xrp_db.find({}).sort({_id:-1}).limit(1) + 1), 'value': XRP})
+
+
+
+        text = f"""{TextBegin()}
 Here is the current Crypto value:  
 #Bitcoin and #Ethereum as reference\n
-BITCOIN: {getPrice("BTC")}$
-ETHEREUM {getPrice("ETH")}$
-RIPPLE: {getPrice("XRP")}$
+BTC: {getPrice("BTC")}$
+ETH: {getPrice("ETH")}$
+XRP: {getPrice("XRP")}$
 EOS: {getPrice("EOS")}$
-CARDANO: {getPrice("ADA")}$
+ADA: {getPrice("ADA")}$
 IOTA: {getPrice("MIOTA")}$
 NANO: {getPrice("NANO")}$\n
 {TextEnd()}\n{hashtag()}"""
 
-    return text
+
+        return text
+    else:
+        text = f"""{TextBegin()}
+Here is the current Crypto value:  
+#Bitcoin and #Ethereum as reference\n
+BTC: {BTC}$
+ETH: {ETH}$
+XRP: {XRP}$
+EOS: {EOS}$
+ADA: {ADA}$
+IOTA: {IOTA}$
+NANO: {NANO}$\n
+{TextEnd()}\n{hashtag()}"""
+
+
+        return text
+
 
 
 # random twitter-text
@@ -70,7 +115,7 @@ def hashtag():
 
 def tweetCrypto():
     var = TextofTweet()
-    if len(var) < 280:
+    if len(var) > 280:
         print("ClimateCoin > The Tweet to Post is over 280 Charackters, so don't posting that!")
         return
     t.statuses.update(status=var)
@@ -78,10 +123,25 @@ def tweetCrypto():
 
 def clearGreetings():
     takenGreetings, takenGreetings, takenhashtags = []
+ 
+
+def tweet_picture():
+    DV.Visualition()
+    with open("grow.png", "rb") as imagefile:
+        imagedata = imagefile.read()
+    t_upload = Twitter(domain='upload.twitter.com',
+                       auth=OAuth(token=os.getenv("TWITTER_TOKEN"),
+                                  token_secret=os.getenv("TOKEN_SECRET"),
+                                  consumer_key=os.getenv("CONSUMER_KEY"),
+                                  consumer_secret=os.getenv("CONSUMER_SECRET")))
+    id_img1 = t_upload.media.upload(media=imagedata)["media_id_string"]
+    t.statuses.update(status="PTT ★", media_ids=",".join([id_img1]))
+
 
 schedule.every().day.at("12:00").do(tweetCrypto)  # 8
 schedule.every().day.at("20:00").do(tweetCrypto)  # 18
 schedule.every().monday.do(clearGreetings)
+schedule.every().sunday.at("12:00").do(tweet_picture)
 
 if __name__ == '__main__':
     while True:
