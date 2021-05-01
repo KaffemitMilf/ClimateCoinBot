@@ -125,8 +125,8 @@ def clearGreetings():
     takenGreetings, takenGreetings, takenhashtags = []
  
 
-def tweet_picture():
-    DV.Visualition()
+def tweet_pictureWeeK():
+    DV.weekVisualization()
     with open("grow.png", "rb") as imagefile:
         imagedata = imagefile.read()
     t_upload = Twitter(domain='upload.twitter.com',
@@ -137,6 +137,17 @@ def tweet_picture():
     id_img1 = t_upload.media.upload(media=imagedata)["media_id_string"]
     t.statuses.update(status="PTT ★", media_ids=",".join([id_img1]))
 
+def tweet_pictureMonth():
+    DV.monthVisualization()
+    with open("grow.png", "rb") as imagefile:
+        imagedata = imagefile.read()
+    t_upload = Twitter(domain='upload.twitter.com',
+                       auth=OAuth(token=os.getenv("TWITTER_TOKEN"),
+                                  token_secret=os.getenv("TOKEN_SECRET"),
+                                  consumer_key=os.getenv("CONSUMER_KEY"),
+                                  consumer_secret=os.getenv("CONSUMER_SECRET")))
+    id_img1 = t_upload.media.upload(media=imagedata)["media_id_string"]
+    t.statuses.update(status="PTT ★", media_ids=",".join([id_img1]))
 
 schedule.every().monday.at("12:00").do(tweetCrypto)
 schedule.every().tuesday.at("12:00").do(tweetCrypto)
@@ -145,6 +156,7 @@ schedule.every().thursday.at("12:00").do(tweetCrypto)
 schedule.every().friday.at("12:00").do(tweetCrypto)
 schedule.every().saturday.at("12:00").do(tweetCrypto)
 schedule.every().sunday.at("12:00").do(tweet_picture)
+schedule.every(4).sunday.at("18:00").do(tweet_pictureMonth)
 schedule.every().monday.do(clearGreetings)
 
 
