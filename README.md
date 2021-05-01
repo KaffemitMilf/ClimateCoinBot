@@ -1,7 +1,5 @@
 
 # ClimateCoinBot
-
-Hey, thats my first Bot...
 Dont forget to check it out on Twitter [@ClimateCoin_Bot](https://twitter.com/ClimateCoin_Bot) :)
 
 

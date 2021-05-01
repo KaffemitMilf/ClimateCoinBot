@@ -138,10 +138,15 @@ def tweet_picture():
     t.statuses.update(status="PTT ★", media_ids=",".join([id_img1]))
 
 
-schedule.every().day.at("12:00").do(tweetCrypto)  # 8
-schedule.every().day.at("20:00").do(tweetCrypto)  # 18
-schedule.every().monday.do(clearGreetings)
+schedule.every().monday.at("12:00").do(tweetCrypto)
+schedule.every().tuesday.at("12:00").do(tweetCrypto)
+schedule.every().wednesday.at("12:00").do(tweetCrypto)
+schedule.every().thursday.at("12:00").do(tweetCrypto)
+schedule.every().friday.at("12:00").do(tweetCrypto)
+schedule.every().saturday.at("12:00").do(tweetCrypto)
 schedule.every().sunday.at("12:00").do(tweet_picture)
+schedule.every().monday.do(clearGreetings)
+
 
 if __name__ == '__main__':
     while True:
