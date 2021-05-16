@@ -23,7 +23,7 @@ datetime_DE = datetime.now(tz_DE)
 def TextofTweet():
     if int(datetime_DE.strftime("%H")) == 12:
         cluster = MongoClient(
-        'mongodb+srv://Fynn:MSJIS0b9WfKtWqq2@cluster0.jqir5.mongodb.net/Coins?retryWrites=true&w=majority')
+        '')
         db = cluster['Coins']
         ada_db = db['ada']
         eos_db = db['eos']
