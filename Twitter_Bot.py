@@ -19,6 +19,34 @@ t= Twitter(auth=OAuth
 
 tz_DE = pytz.timezone('Europe/Berlin')
 datetime_DE = datetime.now(tz_DE)
+
+#time = datetime_DE.strftime("%H:%M:%S")
+ #define later needed variables
+rnumber = random.randint(1,100)
+def timeMin():
+    datetime_DE = datetime.now(tz_DE)
+    return int(datetime_DE.strftime("%M"))
+def timeH():
+    datetime_DE = datetime.now(tz_DE)
+    return int(datetime_DE.strftime("%H"))
+
+#list of taken greetings
+takenGreetings = []
+takenGreetingsEnd = []
+takenhashtags = []
+#twitter api
+t = Twitter(auth=OAuth(
+token = os.getenv("TWITTER_TOKEN"),
+token_secret = os.getenv("TOKEN_SECRET"),
+consumer_key = os.getenv("CONSUMER_KEY"),
+consumer_secret= os.getenv("CONSUMER_SECRET")))
+
+#tweet current twitter-price + extra-text
+def TextofTweet():
+
+
+    text = TextBegin()+f"""
+
 # tweet current twitter-price + extra-text
 
 
@@ -50,6 +78,7 @@ def TextofTweet():
 
 
         text = f"""{TextBegin()}
+
 Here is the current Crypto value:  
 #Bitcoin and #Ethereum as reference\n
 BTC: {getPrice("BTC")}$
@@ -127,6 +156,7 @@ def clearGreetings():
     takenGreetings, takenGreetings, takenhashtags = []
  
 
+
 def tweet_pictureWeek():
     DV.weekVisualization()
     with open("grow.png", "rb") as imagefile:
@@ -165,4 +195,4 @@ schedule.every().monday.do(clearGreetings)
 if __name__ == '__main__':
     while True:
         schedule.run_pending()
-        sleep(30)
+        time.sleep(30)
