@@ -1,19 +1,21 @@
-import time
+from time import sleep
 from twitter import *
 from CryptoPrice import getPrice
 import os
-from HashtagsAndMore import randomTextBegin, listEnd, listhashtag
+from HashtagsAndMore import randomTextBegin, listhashtag
 import schedule
 import matplotlib.pyplot as plt
 import DataVisualization as DV
-
+import pytz
+from datetime import *
 
 # twitter api
-t = Twitter(auth=OAuth(
-    token=os.getenv("TWITTER_TOKEN"),
-    token_secret=os.getenv("TOKEN_SECRET"),
-    consumer_key=os.getenv("CONSUMER_KEY"),
-    consumer_secret=os.getenv("CONSUMER_SECRET")))
+t= Twitter(auth=OAuth
+    (token="xxx", #.getenv("TWITTER_TOKEN"),
+    token_secret="xxx", #os.getenv("TOKEN_SECRET"),
+    consumer_key= "xxx", #os.getenv(CONSUMER_KEY),
+    consumer_secret="xxx")) #os.getenv("CONSUMER_SECRET)
+
 
 tz_DE = pytz.timezone('Europe/Berlin')
 datetime_DE = datetime.now(tz_DE)
@@ -125,7 +127,7 @@ def clearGreetings():
     takenGreetings, takenGreetings, takenhashtags = []
  
 
-def tweet_pictureWeeK():
+def tweet_pictureWeek():
     DV.weekVisualization()
     with open("grow.png", "rb") as imagefile:
         imagedata = imagefile.read()
@@ -155,12 +157,12 @@ schedule.every().wednesday.at("12:00").do(tweetCrypto)
 schedule.every().thursday.at("12:00").do(tweetCrypto)
 schedule.every().friday.at("12:00").do(tweetCrypto)
 schedule.every().saturday.at("12:00").do(tweetCrypto)
-schedule.every().sunday.at("12:00").do(tweet_picture)
-schedule.every(4).sunday.at("18:00").do(tweet_pictureMonth)
+schedule.every().sunday.at("18:00").do(tweet_pictureWeek)
+#schedule.every(4).sunday.at("18:00").do(tweet_pictureMonth)
 schedule.every().monday.do(clearGreetings)
 
 
 if __name__ == '__main__':
     while True:
         schedule.run_pending()
-        time.sleep(30)
+        sleep(30)

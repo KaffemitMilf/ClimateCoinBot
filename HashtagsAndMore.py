@@ -40,6 +40,7 @@ list_hello_gn = ["Good evening, Mr. Graham Wu!",
                  "Hope you had a great experience, mate!","Plant some trees! (link in bio)","The future will be green!","Now it's time for sleep, hope just tommorow crypto will be cheap!",
                  "So have good dreams about wallet full of crypto-things!","Good night :)","Dream about crypto!"]
 
+
 def randomTextBegin() -> str:  # 8,14,18,22
     # gm
     if timeH() <= 8:
