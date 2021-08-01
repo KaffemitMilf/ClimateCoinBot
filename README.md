@@ -1,8 +1,9 @@
+
 # ClimateCoinBot
-<<<<<<< Updated upstream
+
 Hey, thats my first bot...
 Dont forget to check it out on Twitter @ClimateCoin_Bot :)
-=======
+
 Dont forget to check it out on Twitter [@ClimateCoin_Bot](https://twitter.com/ClimateCoin_Bot) :)
 
 
@@ -25,5 +26,8 @@ _You need access to the Twitter and CoinMarketCap API!_
 
 + Run `pip install -r requirements.txt` to install all dependencies
 
+
 + Run `python Twitter_Bot.py`
->>>>>>> Stashed changes
+
++ Run `python Twitter_Bot.py`
+

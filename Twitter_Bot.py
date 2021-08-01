@@ -1,17 +1,25 @@
-import time
+from time import sleep
 from twitter import *
-import random
 from CryptoPrice import getPrice
 import os
-import smtplib
-import datetime
-from datetime import datetime
-import pytz
-import os
-from HashtagsAndMore import randomTextBegin, listEnd, listhashtag
+from HashtagsAndMore import randomTextBegin, listhashtag
 import schedule
+import matplotlib.pyplot as plt
+import DataVisualization as DV
+import pytz
+from datetime import *
+
+# twitter api
+t= Twitter(auth=OAuth
+    (token="xxx", #.getenv("TWITTER_TOKEN"),
+    token_secret="xxx", #os.getenv("TOKEN_SECRET"),
+    consumer_key= "xxx", #os.getenv(CONSUMER_KEY),
+    consumer_secret="xxx")) #os.getenv("CONSUMER_SECRET)
+
+
 tz_DE = pytz.timezone('Europe/Berlin')
 datetime_DE = datetime.now(tz_DE)
+
 #time = datetime_DE.strftime("%H:%M:%S")
  #define later needed variables
 rnumber = random.randint(1,100)
@@ -35,10 +43,14 @@ consumer_secret= os.getenv("CONSUMER_SECRET")))
 
 #tweet current twitter-price + extra-text
 def TextofTweet():
-<<<<<<< Updated upstream
+
 
     text = TextBegin()+f"""
-=======
+
+# tweet current twitter-price + extra-text
+
+
+def TextofTweet():
     if int(datetime_DE.strftime("%H")) == 12:
         cluster = MongoClient(
         '')
@@ -66,77 +78,86 @@ def TextofTweet():
 
 
         text = f"""{TextBegin()}
->>>>>>> Stashed changes
+
 Here is the current Crypto value:  
 #Bitcoin and #Ethereum as reference\n
-BITCOIN: {getPrice("BTC")}$
-ETHEREUM {getPrice("ETH")}$
-RIPPLE: {getPrice("XRP")}$
+BTC: {getPrice("BTC")}$
+ETH: {getPrice("ETH")}$
+XRP: {getPrice("XRP")}$
 EOS: {getPrice("EOS")}$
-CARDANO: {getPrice("ADA")}$
+ADA: {getPrice("ADA")}$
 IOTA: {getPrice("MIOTA")}$
 NANO: {getPrice("NANO")}$\n
-""" +TextEnd() + "\n" +hashtag()
+{TextEnd()}\n{hashtag()}"""
 
-    return text
 
-#random twitter-text
+        return text
+    else:
+        text = f"""{TextBegin()}
+Here is the current Crypto value:  
+#Bitcoin and #Ethereum as reference\n
+BTC: {BTC}$
+ETH: {ETH}$
+XRP: {XRP}$
+EOS: {EOS}$
+ADA: {ADA}$
+IOTA: {IOTA}$
+NANO: {NANO}$\n
+{TextEnd()}\n{hashtag()}"""
+
+
+        return text
+
+
+
+# random twitter-text
+takenGreetings = []
+takenGreetingsEnd = []
+takenhashtags = []
+
+
 def TextBegin():
 
-        randomnum = random.choice(randomTextBegin())
-        while randomnum in takenGreetings:
-            randomnum = random.choice(randomTextBegin())
+    randomnum = randomTextBegin()
+    while randomnum in takenGreetings:
+        randomnum = randomTextBegin()
 
-        takenGreetings.append(randomnum)
-        return randomnum
+    takenGreetings.append(randomnum)
+    return randomnum
 
 
 def TextEnd():
-        randomnum = random.choice(listEnd())
-        while randomnum in takenGreetingsEnd:
-            randomnum = random.choice(listEnd())
-        takenGreetingsEnd.append(randomnum)
-        return randomnum
+    randomnum = listEnd()
+    while randomnum in takenGreetingsEnd:
+        randomnum = listEnd()
+
+    takenGreetingsEnd.append(randomnum)
+    return randomnum
+
 
 def hashtag():
-    randomnum = random.choice(listhashtag())
+    randomnum = listhashtag()
     while randomnum in takenGreetings:
-        randomnum = random.choice(listhashtag())
+        randomnum = listhashtag()
 
     takenhashtags.append(randomnum)
     return randomnum
 
+
 def tweetCrypto():
     var = TextofTweet()
-    while len(var) > 280:
-        time.sleep(60)
-        var = TextofTweet()
-    t.statuses.update(status= var)
-def usedGreetings():
-    takenGreetings, takenGreetings, takenhashtags = []
-
-schedule.every().day.at("08:00").do(tweetCrypto) #8
-schedule.every().day.at("14:00").do(tweetCrypto) #14
-schedule.every().day.at("18:00").do(tweetCrypto) #18
-schedule.every().day.at("22:00").do(tweetCrypto) #22
-schedule.every().monday.do(usedGreetings)
+    if len(var) > 280:
+        print("ClimateCoin > The Tweet to Post is over 280 Charackters, so don't posting that!")
+        return
+    t.statuses.update(status=var)
 
 
-while True:
-    schedule.run_pending()
-    time.sleep(10)
-
-
-
-
-
-<<<<<<< Updated upstream
-=======
 def clearGreetings():
     takenGreetings, takenGreetings, takenhashtags = []
  
 
-def tweet_pictureWeeK():
+
+def tweet_pictureWeek():
     DV.weekVisualization()
     with open("grow.png", "rb") as imagefile:
         imagedata = imagefile.read()
@@ -166,8 +187,8 @@ schedule.every().wednesday.at("12:00").do(tweetCrypto)
 schedule.every().thursday.at("12:00").do(tweetCrypto)
 schedule.every().friday.at("12:00").do(tweetCrypto)
 schedule.every().saturday.at("12:00").do(tweetCrypto)
-schedule.every().sunday.at("12:00").do(tweet_picture)
-schedule.every(4).sunday.at("18:00").do(tweet_pictureMonth)
+schedule.every().sunday.at("18:00").do(tweet_pictureWeek)
+#schedule.every(4).sunday.at("18:00").do(tweet_pictureMonth)
 schedule.every().monday.do(clearGreetings)
 
 
@@ -175,4 +196,3 @@ if __name__ == '__main__':
     while True:
         schedule.run_pending()
         time.sleep(30)
->>>>>>> Stashed changes
