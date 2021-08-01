@@ -41,43 +41,35 @@ token_secret = os.getenv("TOKEN_SECRET"),
 consumer_key = os.getenv("CONSUMER_KEY"),
 consumer_secret= os.getenv("CONSUMER_SECRET")))
 
-#tweet current twitter-price + extra-text
-def TextofTweet():
-
-
-    text = TextBegin()+f"""
-
-# tweet current twitter-price + extra-text
-
 
 def TextofTweet():
-    if int(datetime_DE.strftime("%H")) == 12:
-        cluster = MongoClient(
-        '')
-        db = cluster['Coins']
-        ada_db = db['ada']
-        eos_db = db['eos']
-        miota_db = db['miota']
-        nano_db = db['nano']
-        xrp_db = db['xrp']
 
-        BTC = getPrice("BTC")
-        ETH = getPrice("ETH")
-        XRP = getPrice("XRP")
-        EOS = getPrice("EOS")
-        ADA = getPrice("ADA")
-        IOTA = getPrice("MIOTA")
-        NANO = getPrice("NANO")
+    cluster = MongoClient(
+    'xxx')
+    db = cluster['Coins']
+    ada_db = db['ada']
+    eos_db = db['eos']
+    miota_db = db['miota']
+    nano_db = db['nano']
+    xrp_db = db['xrp']
 
-        ada_db.insertOne({'_id': (ada_db.find({}).sort({_id:-1}).limit(1) + 1), 'value': ADA})
-        eos_db.insertOne({'_id': (eos_db.find({}).sort({_id:-1}).limit(1) + 1), 'value': EOS})
-        miota_db.insertOne({'_id': (miota_db.find({}).sort({_id:-1}).limit(1) + 1), 'value': IOTA})
-        nano_db.insertOne({'_id': (nano_db.find({}).sort({_id:-1}).limit(1) + 1), 'value': NANO})
-        xrp_db.insertOne({'_id': (xrp_db.find({}).sort({_id:-1}).limit(1) + 1), 'value': XRP})
+    BTC = getPrice("BTC")
+    ETH = getPrice("ETH")
+    XRP = getPrice("XRP")
+    EOS = getPrice("EOS")
+    ADA = getPrice("ADA")
+    IOTA = getPrice("MIOTA")
+    NANO = getPrice("NANO")
+
+    ada_db.insertOne({'_id': (ada_db.find({}).sort({_id:-1}).limit(1) + 1), 'value': ADA})
+    eos_db.insertOne({'_id': (eos_db.find({}).sort({_id:-1}).limit(1) + 1), 'value': EOS})
+    miota_db.insertOne({'_id': (miota_db.find({}).sort({_id:-1}).limit(1) + 1), 'value': IOTA})
+    nano_db.insertOne({'_id': (nano_db.find({}).sort({_id:-1}).limit(1) + 1), 'value': NANO})
+    xrp_db.insertOne({'_id': (xrp_db.find({}).sort({_id:-1}).limit(1) + 1), 'value': XRP})
 
 
 
-        text = f"""{TextBegin()}
+    text = f"""{TextBegin()}
 
 Here is the current Crypto value:  
 #Bitcoin and #Ethereum as reference\n
@@ -88,26 +80,10 @@ EOS: {getPrice("EOS")}$
 ADA: {getPrice("ADA")}$
 IOTA: {getPrice("MIOTA")}$
 NANO: {getPrice("NANO")}$\n
-{TextEnd()}\n{hashtag()}"""
+{hashtag()}"""
 
 
-        return text
-    else:
-        text = f"""{TextBegin()}
-Here is the current Crypto value:  
-#Bitcoin and #Ethereum as reference\n
-BTC: {BTC}$
-ETH: {ETH}$
-XRP: {XRP}$
-EOS: {EOS}$
-ADA: {ADA}$
-IOTA: {IOTA}$
-NANO: {NANO}$\n
-{TextEnd()}\n{hashtag()}"""
-
-
-        return text
-
+    return text
 
 
 # random twitter-text
@@ -187,8 +163,7 @@ schedule.every().wednesday.at("12:00").do(tweetCrypto)
 schedule.every().thursday.at("12:00").do(tweetCrypto)
 schedule.every().friday.at("12:00").do(tweetCrypto)
 schedule.every().saturday.at("12:00").do(tweetCrypto)
-schedule.every().sunday.at("18:00").do(tweet_pictureWeek)
-#schedule.every(4).sunday.at("18:00").do(tweet_pictureMonth)
+schedule.every().sunday.at("12:00").do(tweet_pictureWeek)
 schedule.every().monday.do(clearGreetings)
 
 
