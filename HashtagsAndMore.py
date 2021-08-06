@@ -13,9 +13,15 @@ def timeH() -> int:
 
 
 hashtags = ['Crypto', 'Cryptocurrency', 'Etherum', 'Blockchain', 'Token', 'BTC', 'ETH', 'ETC', 'BNB', 'ZEC', 'EOS', 'ADA', 'XRP', 'MIOTA', 'DASH', 'DODGE', 'NANO', 'CARDANO', 'LTC', 'IOTA', 'Priceupdate', 'Altcoins', 'Innovation',
-            'Climate', 'Climatechange', 'CO2', 'Energy', 'Earth', 'ClimateCrisis', 'Mining', 'Cryptomining', 'Technology', 'Cryptonews']
+            'Climate', 'Climatechange', 'CO2', 'Energy', 'Earth', 'ClimateCrisis', 'Mining', 'Cryptomining', 'Technology', 'Cryptonews',"XMR","Monero"]
 
-list_hello_gm = ["Moin! Moin!",
+list_hello = ["Good evening, Mr. Graham Wu!",
+                 "Did you -Syu today?",
+                 "Nice that you found your way into our little dark room together!",
+                 "Day comes to an end, don't forget your extra divident!",
+                 "How did you spend your day?",
+                 "Hope you had a great experience, mate!","Plant some trees! (link in bio)","The future will be green!","Now it's time for sleep, hope just tommorow crypto will be cheap!",
+                 "So have good dreams about wallet full of crypto-things!","Good night :)","Dream about crypto!","Moin! Moin!",
                  "Wakey, wakey, mining is waiting!",
                  "Be active and make your day productive!",
                  "Good morning! Rise just like bitcoin price!",
@@ -32,26 +38,9 @@ list_hello_gm = ["Moin! Moin!",
                  "Make your earnings be increased!"
                  ]
 
-list_hello_gn = ["Good evening, Mr. Graham Wu!",
-                 "Did you -Syu today?",
-                 "Nice that you found your way into our little dark room together!",
-                 "Day comes to an end, don't forget your extra divident!",
-                 "How did you spend your day?",
-                 "Hope you had a great experience, mate!","Plant some trees! (link in bio)","The future will be green!","Now it's time for sleep, hope just tommorow crypto will be cheap!",
-                 "So have good dreams about wallet full of crypto-things!","Good night :)","Dream about crypto!"]
-
 
 def randomTextBegin() -> str:  # 8,14,18,22
-    # gm
-    if timeH() <= 8:
-        return random.choice(list_hello_gm)
-    # gn
-    elif timeH() >= 20:
-        return random.choice(list_hello_gn)
-    # normalDay
-    else:
-        return random.choice(list_hello_normal)
-
+        return random.choice(list_hello)
 
 def listhashtag() -> str:
     return random.choice(hashtags)

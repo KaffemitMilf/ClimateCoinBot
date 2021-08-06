@@ -1,28 +1,25 @@
-from requests import Request, Session
-from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
-import json
-import os
+from bs4 import BeautifulSoup
+import requests
 
-
-def getPrice(coin: str) -> dict:
-    url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest'
-    parameters = {
-        'convert': 'USD',
-        "symbol": coin
+def getPrice(coin) -> str:
+    coin = coin.lower()
+    names = {
+        "eth" : "ethereum",
+        "btc" : "bitcoin",
+        "ada" : "cardano",
+        "xmr" : "monero",
+        "miota" : "iota"
     }
-    headers = {
-        'Accepts': 'application/json',
-        'X-CMC_PRO_API_KEY': f"{os.getenv('CAP_KEY')}",
-    }
+    if coin in names:
+        coin = names[coin]
+    #getting whole website as text
+    source = requests.get(f"https://coinmarketcap.com/currencies/{coin}/").text
+    soup = BeautifulSoup(source, "lxml")
+    #find div with class x
+    information = soup.find("div", class_="priceValue___11gHJ")
+    #seperate text from html, remove $ sign,
+    price =information.text[1:]
+    return price
 
-    session = Session()
-    session.headers.update(headers)
-
-    try:
-        response = session.get(url, params=parameters)
-        data = json.loads(response.text)
-        return round(data["data"][coin]["quote"]["USD"]["price"], 2)
-    except (ConnectionError, Timeout, TooManyRedirects) as e:
-        print(e)
 
 

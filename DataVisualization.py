@@ -11,12 +11,16 @@ def weekVisualization():
     miota_db = db['miota']
     nano_db = db['nano']
     xrp_db = db['xrp']
+    xmr_db = db["xmr"]
+    eth_db = db["eth"]
 
     ada_list = []
     eos_list = []
     miota_list = []
     nano_list = []
     xrp_list = []
+    xmr_list = []
+    eth_list = []
 
     ada_datas = ada_db.find().sort('_id', -1).limit(7)
     for i in ada_datas:
@@ -43,6 +47,16 @@ def weekVisualization():
         xrp_list.append(i['value'])
     xrp_list.reverse()
 
+    xmr_datas = xmr_db.find().sort('_id', -1).limit(7)
+    for i in xmr_datas:
+        xmr_list.append(i['value'])
+    xmr_list.reverse()
+
+    eth_datas = eth_db.find().sort('_id', -1).limit(7)
+    for i in eth_datas:
+        eth_list.append(i['value'])
+    eth_list.reverse()
+
     # Days
     x = ["Monday", "Tuesday", "Wednesday",
          "Thursday", "Friday", "Saturday", "Sunday"]
@@ -53,7 +67,8 @@ def weekVisualization():
     axe_3 = miota_list  # [1, 3, 4, 5, 6, 8, 2]
     axe_4 = nano_list  # [1, 9, 6, 4, 8, 2, 7]
     axe_5 = xrp_list  # [8, 2, 9, 4, 6, 2, 8]
-
+    axe_6 = xmr_list
+    axe_7 = eth_list
     # add color
     plt.figure(facecolor="#14171A")
     ax = plt.axes()
@@ -74,7 +89,8 @@ def weekVisualization():
     plt.plot(x, axe_1, label="ADA", color="darkgreen")
     plt.plot(x, axe_3, label="MIOTA", color="purple")
     plt.plot(x, axe_4, label="NANO", color="blue")
-
+    plt.plot(x, axe_6, label= "MONERO", color = "orange")
+    plt.plot(x, axe_6, label="ETHEREUM", color="orange")
     # naming axis
     plt.xlabel("Days", fontweight="bold", color="#F5F8FA")
     plt.ylabel("", fontweight="bold", color="#F5F8FA")
@@ -97,12 +113,14 @@ def monthVisualization():
     miota_db = db['miota']
     nano_db = db['nano']
     xrp_db = db['xrp']
+    xmr_db = db["xmr"]
 
     ada_list = []
     eos_list = []
     miota_list = []
     nano_list = []
     xrp_list = []
+    xmr_list = []
 
     ada_datas = ada_db.find().sort('_id', -1).limit(30)
     for i in ada_datas:
@@ -129,6 +147,10 @@ def monthVisualization():
         xrp_list.append(i['value'])
     xrp_list.reverse()
 
+    xmr_datas = xmr_db.find().sort('_id', -1).limit(30)
+    for i in xmr_datas:
+        xmr_list.append(i['value'])
+    xmr_list.reverse()
     # Days
     x = []
     for i in range(0,30):
@@ -141,7 +163,7 @@ def monthVisualization():
     axe_3 = miota_list  # [1, 3, 4, 5, 6, 8, 2]
     axe_4 = nano_list  # [1, 9, 6, 4, 8, 2, 7]
     axe_5 = xrp_list  # [8, 2, 9, 4, 6, 2, 8]
-
+    axe_6 = xmr_list
     # add color
     plt.figure(facecolor="#14171A")
     ax = plt.axes()
@@ -162,7 +184,7 @@ def monthVisualization():
     plt.plot(x, axe_1, label="ADA", color="darkgreen")
     plt.plot(x, axe_3, label="MIOTA", color="purple")
     plt.plot(x, axe_4, label="NANO", color="blue")
-
+    plt.plot(x, axe_6, label="XMR", color="orange")
     # naming axis
     plt.xlabel("Days", fontweight="bold", color="#F5F8FA")
     plt.ylabel("Price", fontweight="bold", color="#F5F8FA")
@@ -176,4 +198,4 @@ def monthVisualization():
         text.set_color("#F5F8FA")
     plt.savefig("grow.png", bbox_inches="tight", dpi=300)
 
-
+    #eth not added yet
