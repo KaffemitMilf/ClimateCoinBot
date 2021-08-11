@@ -12,10 +12,10 @@ import pymongo
 
 # twitter api
 t= Twitter(auth=OAuth
-    (token="1366841945746735105-CxidSpZWVEs6teNkvQ2LRnUyrdoE8R", #.getenv("TWITTER_TOKEN"),
-    token_secret="qbbSne1uGG5urOQxWUSUpLCW8J7JEnIYj68RX4PCGqHXS", #os.getenv("TOKEN_SECRET"),
-    consumer_key= "Q68p95z93b8ZtYbcC0nQMHold", #os.getenv(CONSUMER_KEY),
-    consumer_secret="uZJx4SA4919PKgj2IAC1pMHhsNkxTJWhs7NCFGj1gJFNL8sj4A")) #os.getenv("CONSUMER_SECRET)
+    (token="1366841945746735105-pvY0MB64jRsuQag6mrAlN0WZbFBUMA", #.getenv("TWITTER_TOKEN"),
+    token_secret="wKajDGxSV9xJjTPCRhc0IZAIpI2gFtulGDyq4GAk8IIMK", #os.getenv("TOKEN_SECRET"),
+    consumer_key= "yhr4p9mN4sR1FeyJHEZvJNmVl", #os.getenv(CONSUMER_KEY),
+    consumer_secret="L3YcZn30mlcQjMnOeyu65o0NbjQjXpggm1psuu4Pq2b8wen08t")) #os.getenv("CONSUMER_SECRET)
 
 
 tz_DE = pytz.timezone('Europe/Berlin')
@@ -42,6 +42,7 @@ def TextofTweet():
     nano_db = db['nano']
     xrp_db = db['xrp']
     xmr_db = db["xmr"]
+    eth_db = db["eth"]
 
     BTC = getPrice("BTC")
     ETH = getPrice("ETH")
@@ -52,28 +53,25 @@ def TextofTweet():
     NANO =getPrice("NANO")
     XMR = getPrice("XMR")
 
-    ada_db.insertOne({'_id': (ada_db.find().sort("_id", -1).limit(1) + 1), 'value': ADA})
-    eos_db.insertOne({'_id': (eos_db.find().sort("_id",-1).limit(1) + 1), 'value': EOS})
-    miota_db.insertOne({'_id': (miota_db.find().sort("_id",-1).limit(1) + 1), 'value': IOTA})
-    nano_db.insertOne({'_id': (nano_db.find().sort("_id",-1).limit(1) + 1), 'value': NANO})
-    xrp_db.insertOne({'_id': (xrp_db.find().sort("_id",-1).limit(1) + 1), 'value': XRP})
-    xmr_db.insertOne({'_id': (xmr_db.find().sort("_id", -1).limit(1) + 1), 'value': XMR})
-
+    ada_db.insert_one({"_id":list(ada_db.find().sort('_id',-1).limit(1))[0]["_id"]+1, "value": ADA})
+    eos_db.insert_one({"_id":list(eos_db.find().sort('_id',-1).limit(1))[0]["_id"]+1, "value": EOS})
+    miota_db.insert_one({"_id":list(miota_db.find().sort('_id',-1).limit(1))[0]["_id"]+1, "value": IOTA})
+    nano_db.insert_one({"_id":list(nano_db.find().sort('_id',-1).limit(1))[0]["_id"]+1, "value": NANO})
+    xrp_db.insert_one({"_id":list(xrp_db.find().sort('_id',-1).limit(1))[0]["_id"]+1, "value": XRP})
+    xmr_db.insert_one({"_id":list(xmr_db.find().sort('_id',-1).limit(1))[0]["_id"]+1, "value": XMR})
+    eth_db.insert_one({"_id":list(eth_db.find().sort('_id',-1).limit(1))[0]["_id"]+1, "value": ETH})
 
     text = f"""{TextBegin()}
-
-  
-#Bitcoin as reference\n
-BTC: {getPrice("BTC")}$
-ETH: {getPrice("ETH")}$
-XRP: {getPrice("XRP")}$
-XMR: {getPrice("XMR")}
-EOS: {getPrice("EOS")}$
-ADA: {getPrice("ADA")}$
-IOTA: {getPrice("MIOTA")}$
-NANO: {getPrice("NANO")}$\n
+#Bitcoin as reference
+BTC: {BTC}$
+ETH: {ETH}$
+XRP: {XRP}$
+XMR: {XMR}$
+EOS: {EOS}$
+ADA: {ADA}$
+IOTA: {IOTA}$
+NANO: {NANO}$\n
 {hashtag()}"""
-
 
     return text
 
@@ -105,8 +103,7 @@ def hashtag():
 def tweetCrypto():
     var = TextofTweet()
     if len(var) > 280:
-        print("ClimateCoin > The Tweet to Post is over 280 Characters, so don't posting that!")
-        return
+        print("ClimateCoin > The Tweet to Post is over 280 characters, so don't posting that!")
     t.statuses.update(status=var)
 
 
@@ -118,32 +115,15 @@ def tweet_pictureWeek():
     with open("grow.png", "rb") as imagefile:
         imagedata = imagefile.read()
     t_upload = Twitter(domain='upload.twitter.com',
-                       auth=OAuth(token="1366841945746735105-CxidSpZWVEs6teNkvQ2LRnUyrdoE8R", #.getenv("TWITTER_TOKEN")
-                        token_secret="qbbSne1uGG5urOQxWUSUpLCW8J7JEnIYj68RX4PCGqHXS", #os.getenv("TOKEN_SECRET")
-                        consumer_key= "Q68p95z93b8ZtYbcC0nQMHold", #os.getenv(CONSUMER_KEY)
-                        consumer_secret="uZJx4SA4919PKgj2IAC1pMHhsNkxTJWhs7NCFGj1gJFNL8sj4A")) #os.getenv("CONSUMER_SECRET))
+                       auth=OAuth(token="1366841945746735105-pvY0MB64jRsuQag6mrAlN0WZbFBUMA", #.getenv("TWITTER_TOKEN")
+                        token_secret="wKajDGxSV9xJjTPCRhc0IZAIpI2gFtulGDyq4GAk8IIMK", #os.getenv("TOKEN_SECRET")
+                        consumer_key= "yhr4p9mN4sR1FeyJHEZvJNmVl", #os.getenv(CONSUMER_KEY)
+                        consumer_secret="L3YcZn30mlcQjMnOeyu65o0NbjQjXpggm1psuu4Pq2b8wen08t")) #os.getenv("CONSUMER_SECRET))
     id_img1 = t_upload.media.upload(media=imagedata)["media_id_string"]
-    t.statuses.update(status="PTT ★", media_ids=",".join([id_img1]))
+    t.statuses.update(status=DV.textWeek(), media_ids=",".join([id_img1]))
 
-def tweet_pictureMonth():
-    DV.monthVisualization()
-    with open("grow.png", "rb") as imagefile:
-        imagedata = imagefile.read()
-    t_upload = Twitter(domain='upload.twitter.com',
-                       auth=OAuth(token="1366841945746735105-CxidSpZWVEs6teNkvQ2LRnUyrdoE8R", #.getenv("TWITTER_TOKEN")
-                        token_secret="qbbSne1uGG5urOQxWUSUpLCW8J7JEnIYj68RX4PCGqHXS", #os.getenv("TOKEN_SECRET")
-                        consumer_key= "Q68p95z93b8ZtYbcC0nQMHold", #os.getenv(CONSUMER_KEY)
-                        consumer_secret="uZJx4SA4919PKgj2IAC1pMHhsNkxTJWhs7NCFGj1gJFNL8sj4A")) #os.getenv("CONSUMER_SECRET))
-    id_img1 = t_upload.media.upload(media=imagedata)["media_id_string"]
-    t.statuses.update(status="PTT ★", media_ids=",".join([id_img1]))
-
-schedule.every().monday.at("12:00").do(tweetCrypto)
-schedule.every().tuesday.at("12:00").do(tweetCrypto)
-schedule.every().wednesday.at("12:00").do(tweetCrypto)
-schedule.every().thursday.at("12:00").do(tweetCrypto)
-schedule.every().friday.at("11:35").do(tweetCrypto)
-schedule.every().saturday.at("12:00").do(tweetCrypto)
-schedule.every().sunday.at("12:00").do(tweet_pictureWeek)
+schedule.every().day.at("22:16").do(tweetCrypto)
+schedule.every().sunday.at("14:00").do(tweet_pictureWeek)
 schedule.every().monday.do(clearGreetings)
 
 

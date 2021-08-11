@@ -1,74 +1,48 @@
 import matplotlib.pyplot as plt
 from CryptoPrice import getPrice
 import pymongo
+from Twitter_Bot import TextBegin,hashtag
 
-def weekVisualization():
+def getGrowth(coin, days):
     cluster = pymongo.MongoClient(
         'mongodb+srv://Fynn:MSJIS0b9WfKtWqq2@cluster0.jqir5.mongodb.net/Coins?retryWrites=true&w=majority')
     db = cluster['Coins']
-    ada_db = db['ada']
-    eos_db = db['eos']
-    miota_db = db['miota']
-    nano_db = db['nano']
-    xrp_db = db['xrp']
-    xmr_db = db["xmr"]
-    eth_db = db["eth"]
 
-    ada_list = []
-    eos_list = []
-    miota_list = []
-    nano_list = []
-    xrp_list = []
-    xmr_list = []
-    eth_list = []
+    coin_db = db[coin]
+    coin_list = []
+    coin_list_vs = []
 
-    ada_datas = ada_db.find().sort('_id', -1).limit(7)
-    for i in ada_datas:
-        ada_list.append(i['value'])
-    ada_list.reverse()
+    coin_data = coin_db.find().sort('_id', -1).limit(int(days) + 1)
+    for i in coin_data:
+        coin_list.append(float(i['value'].replace(',',"")))
+    coin_list.reverse()
+    x = 0
+    y = 1
+    # calculate growth
+    for i in range(0, len(coin_list) - 1):
+        k = coin_list[x] - coin_list[y]
+        k = (k/coin_list[y])*100
+        coin_list_vs.append(k)
+        x += 1
+        y += 1
 
-    eos_datas = eos_db.find().sort('_id', -1).limit(7)
-    for i in eos_datas:
-        eos_list.append(i['value'])
-    eos_list.reverse()
+    return coin_list_vs
 
-    miota_datas = miota_db.find().sort('_id', -1).limit(7)
-    for i in miota_datas:
-        miota_list.append(i['value'])
-    miota_list.reverse()
+def weekVisualization():
 
-    nano_datas = nano_db.find().sort('_id', -1).limit(7)
-    for i in nano_datas:
-        nano_list.append(i['value'])
-    nano_list.reverse()
-
-    xrp_datas = xrp_db.find().sort('_id', -1).limit(7)
-    for i in xrp_datas:
-        xrp_list.append(i['value'])
-    xrp_list.reverse()
-
-    xmr_datas = xmr_db.find().sort('_id', -1).limit(7)
-    for i in xmr_datas:
-        xmr_list.append(i['value'])
-    xmr_list.reverse()
-
-    eth_datas = eth_db.find().sort('_id', -1).limit(7)
-    for i in eth_datas:
-        eth_list.append(i['value'])
-    eth_list.reverse()
+    #get lists with growth in %
+    axe_1 = getGrowth("ada", 7)
+    axe_2 = getGrowth("eos",7)
+    axe_3 = getGrowth("miota",7)
+    axe_4 = getGrowth("nano",7)
+    axe_5 = getGrowth("xrp",7)
+    axe_7 = getGrowth("xmr",7)
+    axe_6 = getGrowth("eth",7)
 
     # Days
     x = ["Monday", "Tuesday", "Wednesday",
          "Thursday", "Friday", "Saturday", "Sunday"]
 
-    # Data
-    axe_1 = ada_list  # [5, 1, 2, 3, 4, -5, 6]
-    axe_2 = eos_list  # [2, 4, -1, 7, 8, 9, 10]
-    axe_3 = miota_list  # [1, 3, 4, 5, 6, 8, 2]
-    axe_4 = nano_list  # [1, 9, 6, 4, 8, 2, 7]
-    axe_5 = xrp_list  # [8, 2, 9, 4, 6, 2, 8]
-    axe_6 = xmr_list
-    axe_7 = eth_list
     # add color
     plt.figure(facecolor="#14171A")
     ax = plt.axes()
@@ -89,113 +63,51 @@ def weekVisualization():
     plt.plot(x, axe_1, label="ADA", color="darkgreen")
     plt.plot(x, axe_3, label="MIOTA", color="purple")
     plt.plot(x, axe_4, label="NANO", color="blue")
-    plt.plot(x, axe_6, label= "MONERO", color = "orange")
-    plt.plot(x, axe_6, label="ETHEREUM", color="orange")
+    plt.plot(x, axe_6, label="ETHEREUM", color="lightgreen")
+    plt.plot(x, axe_7, label="MONERO", color="orange")
     # naming axis
     plt.xlabel("Days", fontweight="bold", color="#F5F8FA")
     plt.ylabel("", fontweight="bold", color="#F5F8FA")
 
     # giving title, save as png
-    plt.title("The prices in the last 7 days", color="#F5F8FA")
+    plt.title("growth of the last 7 days in percent", color="#F5F8FA")
 
     # change color of fond in legend
-    l = plt.legend(facecolor="#14171A", frameon=False)
+    l = plt.legend(loc='upper left',facecolor="#14171A", frameon=False)
     for text in l.get_texts():
         text.set_color("#F5F8FA")
     plt.savefig("grow.png", bbox_inches="tight", dpi=300)
 
-def monthVisualization():
+def getGrowthOverall(coin,days):
     cluster = pymongo.MongoClient(
         'mongodb+srv://Fynn:MSJIS0b9WfKtWqq2@cluster0.jqir5.mongodb.net/Coins?retryWrites=true&w=majority')
     db = cluster['Coins']
-    ada_db = db['ada']
-    eos_db = db['eos']
-    miota_db = db['miota']
-    nano_db = db['nano']
-    xrp_db = db['xrp']
-    xmr_db = db["xmr"]
 
-    ada_list = []
-    eos_list = []
-    miota_list = []
-    nano_list = []
-    xrp_list = []
-    xmr_list = []
+    coin_db = db[coin]
+    coin_list = []
+    coin_list_vs = []
 
-    ada_datas = ada_db.find().sort('_id', -1).limit(30)
-    for i in ada_datas:
-        ada_list.append(i['value'])
-    ada_list.reverse()
+    coin_data = coin_db.find().sort('_id', -1).limit(int(days) + 1)
+    for i in coin_data:
+        coin_list.append(float(i['value']))
+    coin_list.reverse()
+    k = coin_list[0] - coin_list[len(coin_list)-1]
+    k = (k / coin_list[len(coin_list)-1]) * 100
+    if k > 0:
+        return "+" + str(k)
+    else:
+        return str(k)
 
-    eos_datas = eos_db.find().sort('_id', -1).limit(30)
-    for i in eos_datas:
-        eos_list.append(i['value'])
-    eos_list.reverse()
+def textWeek():
+    text = f"""{TextBegin()}
+ETH: {getGrowthOverall("eth", 7)}%
+XRP: {getGrowthOverall("xrp", 7)}%
+XMR: {getGrowthOverall("xmr", 7)}%
+EOS: {getGrowthOverall("eos", 7)}%
+ADA: {getGrowthOverall("ada", 7)}%
+IOTA: {getGrowthOverall("miota", 7)}%
+NANO: {getGrowthOverall("nano", 7)}% \n
+{hashtag()}
+"""
+    return text
 
-    miota_datas = miota_db.find().sort('_id', -1).limit(30)
-    for i in miota_datas:
-        miota_list.append(i['value'])
-    miota_list.reverse()
-
-    nano_datas = nano_db.find().sort('_id', -1).limit(30)
-    for i in nano_datas:
-        nano_list.append(i['value'])
-    nano_list.reverse()
-
-    xrp_datas = xrp_db.find().sort('_id', -1).limit(30)
-    for i in xrp_datas:
-        xrp_list.append(i['value'])
-    xrp_list.reverse()
-
-    xmr_datas = xmr_db.find().sort('_id', -1).limit(30)
-    for i in xmr_datas:
-        xmr_list.append(i['value'])
-    xmr_list.reverse()
-    # Days
-    x = []
-    for i in range(0,30):
-        x.append(i)
-
-
-    # Data
-    axe_1 = ada_list  # [5, 1, 2, 3, 4, -5, 6]
-    axe_2 = eos_list  # [2, 4, -1, 7, 8, 9, 10]
-    axe_3 = miota_list  # [1, 3, 4, 5, 6, 8, 2]
-    axe_4 = nano_list  # [1, 9, 6, 4, 8, 2, 7]
-    axe_5 = xrp_list  # [8, 2, 9, 4, 6, 2, 8]
-    axe_6 = xmr_list
-    # add color
-    plt.figure(facecolor="#14171A")
-    ax = plt.axes()
-    ax.set_facecolor("#14171A")
-    # outer lines
-    ax.spines["bottom"].set_color("#F5F8FA")
-    ax.spines["left"].set_color("#F5F8FA")
-    ax.spines["top"].set_color("#F5F8FA")
-    ax.spines["right"].set_color("#F5F8FA")
-    # axes
-    ax.tick_params(axis='x', colors="#F5F8FA")
-    ax.tick_params(axis='y', colors="#F5F8FA")
-
-    # adding graphs to the digram
-    # ,marker = 'o', markerfacecolor = 'r'
-    plt.plot(x, axe_5, label="XRP", color="lightblue")
-    plt.plot(x, axe_2, label="EOS", color="grey")
-    plt.plot(x, axe_1, label="ADA", color="darkgreen")
-    plt.plot(x, axe_3, label="MIOTA", color="purple")
-    plt.plot(x, axe_4, label="NANO", color="blue")
-    plt.plot(x, axe_6, label="XMR", color="orange")
-    # naming axis
-    plt.xlabel("Days", fontweight="bold", color="#F5F8FA")
-    plt.ylabel("Price", fontweight="bold", color="#F5F8FA")
-
-    # giving title, save as png
-    plt.title("The prices in the last 30 Days", color="#F5F8FA")
-
-    # change color of fond in legend
-    l = plt.legend(facecolor="#14171A", frameon=False)
-    for text in l.get_texts():
-        text.set_color("#F5F8FA")
-    plt.savefig("grow.png", bbox_inches="tight", dpi=300)
-
-    #eth not added yet

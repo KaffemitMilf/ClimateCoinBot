@@ -12,14 +12,17 @@ def getPrice(coin) -> str:
     }
     if coin in names:
         coin = names[coin]
-    #getting whole website as text
-    source = requests.get(f"https://coinmarketcap.com/currencies/{coin}/").text
-    soup = BeautifulSoup(source, "lxml")
-    #find div with class x
-    information = soup.find("div", class_="priceValue___11gHJ")
-    #seperate text from html, remove $ sign,
-    price =information.text[1:]
-    return price
+    price = "0"
+    while price == "0":
+        #getting whole website as text
+        source = requests.get(f"https://coinmarketcap.com/currencies/{coin}/")
+        source = source.text
+        soup = BeautifulSoup(source, "lxml")
+        #find div with class x
+        information = soup.find("div", class_="priceValue___11gHJ")
+        #seperate text from html, remove $ sign,
+        price =information.text[1:].replace(",","")
+    return price.replace(",","")
 
 
 
