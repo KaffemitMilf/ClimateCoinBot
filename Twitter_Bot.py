@@ -122,7 +122,10 @@ def tweet_pictureWeek():
     id_img1 = t_upload.media.upload(media=imagedata)["media_id_string"]
     t.statuses.update(status=DV.textWeek(), media_ids=",".join([id_img1]))
 
-schedule.every().day.at("12:00").do(tweetCrypto)
+
+
+schedule.every().day.at("12:00").do(job)
+
 schedule.every().sunday.at("14:00").do(tweet_pictureWeek)
 schedule.every().monday.do(clearGreetings)
 
@@ -130,5 +133,5 @@ schedule.every().monday.do(clearGreetings)
 if __name__ == '__main__':
     while True:
         schedule.run_pending()
-        sleep(30)
+        sleep(1)
 

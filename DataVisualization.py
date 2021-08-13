@@ -92,7 +92,7 @@ def getGrowthOverall(coin,days):
         coin_list.append(float(i['value']))
     coin_list.reverse()
     k = coin_list[0] - coin_list[len(coin_list)-1]
-    k = (k / coin_list[len(coin_list)-1]) * 100
+    k = round((k / coin_list[len(coin_list)-1]) * 100, 2)
     if k > 0:
         return "+" + str(k)
     else:
