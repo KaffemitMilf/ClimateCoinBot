@@ -1,11 +1,11 @@
 import matplotlib.pyplot as plt
 from CryptoPrice import getPrice
 import pymongo
-from Twitter_Bot import TextBegin,hashtag
+from HashtagsAndMore import TextBegin, Hashtag
 
 def getGrowth(coin, days):
     cluster = pymongo.MongoClient(
-        'mongodb+srv://Fynn:MSJIS0b9WfKtWqq2@cluster0.jqir5.mongodb.net/Coins?retryWrites=true&w=majority')
+       "mongodb+srv://Fynn:MSJIS0b9WfKtWqq2@cluster0.jqir5.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
     db = cluster['Coins']
 
     coin_db = db[coin]
@@ -107,7 +107,7 @@ EOS: {getGrowthOverall("eos", 7)}%
 ADA: {getGrowthOverall("ada", 7)}%
 IOTA: {getGrowthOverall("miota", 7)}%
 NANO: {getGrowthOverall("nano", 7)}% \n
-{hashtag()}
+{Hashtag()}
 """
     return text
 

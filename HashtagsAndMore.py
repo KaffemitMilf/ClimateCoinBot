@@ -1,16 +1,5 @@
-from datetime import datetime
-import pytz
+
 import random
-
-tz_DE = pytz.timezone('Europe/Berlin')
-datetime_DE = datetime.now(tz_DE)
-time = datetime_DE.strftime("%H:%M:%S")
-
-
-def timeH() -> int:
-    datetime_DE = datetime.now(tz_DE)
-    return int(datetime_DE.strftime("%H"))
-
 
 hashtags = ['Crypto', 'Cryptocurrency', 'Etherum', 'Blockchain', 'Token', 'BTC', 'ETH', 'ETC', 'BNB', 'ZEC', 'EOS', 'ADA', 'XRP', 'MIOTA', 'DASH', 'DODGE', 'NANO', 'CARDANO', 'LTC', 'IOTA', 'Priceupdate', 'Altcoins', 'Innovation',
             'Climate', 'Climatechange', 'CO2', 'Energy', 'Earth', 'ClimateCrisis', 'Mining', 'Cryptomining', 'Technology', 'Cryptonews',"XMR","Monero"]
@@ -35,11 +24,25 @@ list_hello = ["Good evening, Mr. Graham Wu!",
                  "Nice to meet you here :)",
                  "Make your earnings be increased!"
                  ]
+# random twitter-text
+takenGreetings = []
+takenhashtags = []
 
+def TextBegin():
+    randomnum = random.choice(list_hello)
+    while randomnum in takenGreetings:
+        randomnum = random.choice(list_hello)
 
-def randomTextBegin() -> str:  # 8,14,18,22
-        return random.choice(list_hello)
+    takenGreetings.append(randomnum)
+    return randomnum
 
-def listhashtag() -> str:
-    return "#" + random.choice(hashtags)
+def Hashtag():
+    randomnum = "#" + random.choice(hashtags)
+    while randomnum in takenGreetings:
+        randomnum = "#" + random.choice(hashtags)
 
+    takenhashtags.append(randomnum)
+    return randomnum
+
+def clearGreetings():
+    takenGreetings, takenhashtags = []

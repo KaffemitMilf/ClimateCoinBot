@@ -2,13 +2,14 @@ from time import sleep
 from twitter import *
 from CryptoPrice import getPrice
 import os
-from HashtagsAndMore import randomTextBegin, listhashtag
+from HashtagsAndMore import TextBegin, Hashtag, clearGreetings
 import schedule
 import matplotlib.pyplot as plt
 import DataVisualization as DV
 import pytz
 from datetime import *
 import pymongo
+from DataVisualization import weekVisualization
 
 # twitter api
 t= Twitter(auth=OAuth
@@ -34,7 +35,8 @@ takenhashtags = []
 def TextofTweet():
 
     cluster = pymongo.MongoClient(
-    "mongodb+srv://Fynn:MSJIS0b9WfKtWqq2@cluster0.jqir5.mongodb.net/Coins?retryWrites=true&w=majority")
+    #"mongodb+srv://Fynn:MSJIS0b9WfKtWqq2@cluster0.jqir5.mongodb.net/Coins?retryWrites=true&w=majority")
+    "mongodb+srv://Fynn:MSJIS0b9WfKtWqq2@cluster0.jqir5.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
     db = cluster['Coins']
     ada_db = db['ada']
     eos_db = db['eos']
@@ -71,34 +73,9 @@ EOS: {EOS}$
 ADA: {ADA}$
 IOTA: {IOTA}$
 NANO: {NANO}$\n
-{hashtag()}"""
+{Hashtag()}"""
 
     return text
-
-
-# random twitter-text
-takenGreetings = []
-takenGreetingsEnd = []
-takenhashtags = []
-
-
-def TextBegin():
-
-    randomnum = randomTextBegin()
-    while randomnum in takenGreetings:
-        randomnum = randomTextBegin()
-
-    takenGreetings.append(randomnum)
-    return randomnum
-
-def hashtag():
-    randomnum = listhashtag()
-    while randomnum in takenGreetings:
-        randomnum = listhashtag()
-
-    takenhashtags.append(randomnum)
-    return randomnum
-
 
 def tweetCrypto():
     var = TextofTweet()
@@ -106,12 +83,8 @@ def tweetCrypto():
         print("ClimateCoin > The Tweet to Post is over 280 characters, so don't posting that!")
     t.statuses.update(status=var)
 
-
-def clearGreetings():
-    takenGreetings, takenhashtags = []
-
 def tweet_pictureWeek():
-    DV.weekVisualization()
+    weekVisualization()
     with open("grow.png", "rb") as imagefile:
         imagedata = imagefile.read()
     t_upload = Twitter(domain='upload.twitter.com',
@@ -122,16 +95,14 @@ def tweet_pictureWeek():
     id_img1 = t_upload.media.upload(media=imagedata)["media_id_string"]
     t.statuses.update(status=DV.textWeek(), media_ids=",".join([id_img1]))
 
-
-
-schedule.every().day.at("12:00").do(job)
-
+schedule.every().day.at("12:00").do(tweetCrypto)
 schedule.every().sunday.at("14:00").do(tweet_pictureWeek)
 schedule.every().monday.do(clearGreetings)
 
 
 if __name__ == '__main__':
     while True:
-        schedule.run_pending()
-        sleep(1)
+       schedule.run_pending()
+       sleep(1)
+
 
