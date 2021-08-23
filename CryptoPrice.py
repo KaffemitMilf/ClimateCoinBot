@@ -20,9 +20,9 @@ def getPrice(coin) -> str:
         soup = BeautifulSoup(source, "lxml")
         #find div with class x
         information = soup.find("div", class_="priceValue___11gHJ")
-        #seperate text from html, remove $ sign,
+        #seperate text from html, remove $ sign
         price =information.text[1:].replace(",","")
-    return price.replace(",","")
+    return price
 
 
 
