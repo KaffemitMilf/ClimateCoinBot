@@ -1,8 +1,6 @@
-import selenium.webdriver.common.touch_actions
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from time import sleep
-import os
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -48,8 +46,6 @@ class Instagram:
         #press false on activate notifiation
         element = WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[5]/div/div/div/div[3]/button[2]")))
         element.click()
-        element = WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[1]/div/div/section/div[2]/div/div[1]/button/span")))
-        element.click()
 
     def goToStart(self):
         driver.get("https://www.instagram.com/")
@@ -72,18 +68,26 @@ class Instagram:
                 #go back
                 driver.back()
 
-    def upload(self, image, text):
+    def upload(self, description, image_path):
         driver.get("https://www.instagram.com/")
-        element = WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[1]/section/nav[2]/div/div/div[2]/div/div/div[3]"))).click()
+        button = WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH,"//*[name()='svg' and @aria-label='Neuer Beitrag']")))
+        driver.execute_script("arguments[0].click();", button)
+        sleep(15)
         #find input field
         upload_btn = driver.find_element(By.CSS_SELECTOR, "input[type='file']")
-        time.sleep(2)
         #send image
-        upload_btn.send_keys("C:\\Users\\brend\PycharmProjects\ClimateCoinBot\\PP2.jpg") #full path of the file which is to be uploaded
+        upload_btn.send_keys(image_path) #full path of the file which is to be uploaded
+        #click "next" button
+        element = WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[1]/section/div[1]/header/div/div[2]/button"))).click()
+        #add description
+        element = WebDriverWait(driver, 60).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/section/div[2]/section[1]/div[1]/textarea")))
+        element.send_keys(description)
+        #press share/upload button
+        element = WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[1]/section/div[1]/header/div/div[2]/button"))).click()
 
 acc = Instagram("climatecoinbot", "Arne2005")
 acc.login()
-acc.upload()
+acc.upload("hello","C:\\Users\\brend\PycharmProjects\ClimateCoinBot\\PP2.jpg")
 #rn.likeByHashtag(["hello"],10)
 sleep(120)
 
