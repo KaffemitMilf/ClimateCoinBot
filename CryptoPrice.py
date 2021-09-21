@@ -1,7 +1,6 @@
 from requests import Session
 import json
 
-
 def get_price(coin: str):
     url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest"
     parameters = {

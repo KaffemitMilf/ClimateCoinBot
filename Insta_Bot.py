@@ -5,6 +5,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from os import getenv
 
 #define webdriver and emulate IPhone X
 PATH = "C:\Program Files (x86)\chromedriver.exe"
@@ -85,7 +86,7 @@ class Instagram:
         #press share/upload button
         element = WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[1]/section/div[1]/header/div/div[2]/button"))).click()
 
-acc = Instagram("climatecoinbot", "Arne2005")
+acc = Instagram(getenv("Instagram_username"), getenv("Instagram_password"))
 acc.login()
 acc.upload("hello","C:\\Users\\brend\PycharmProjects\ClimateCoinBot\\PP2.jpg")
 #rn.likeByHashtag(["hello"],10)

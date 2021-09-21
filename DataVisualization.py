@@ -1,43 +1,42 @@
 import matplotlib.pyplot as plt
-from CryptoPrice import getPrice
 import pymongo
-from HashtagsAndMore import TextBegin, Hashtag
+from HashtagsAndMore import text_begin, random_hashtag
+from os import getenv
 
-def getGrowth(coin, days):
-    cluster = pymongo.MongoClient(
-       "mongodb+srv://Fynn:MSJIS0b9WfKtWqq2@cluster0.jqir5.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+
+def get_growth(coin, days):
+    cluster = pymongo.MongoClient(getenv("pymongoClient"))
     db = cluster['Coins']
-
     coin_db = db[coin]
     coin_list = []
     coin_list_vs = []
 
     coin_data = coin_db.find().sort('_id', -1).limit(int(days) + 1)
     for i in coin_data:
-        coin_list.append(float(i['value'].replace(',',"")))
+        coin_list.append(float(i['value'].replace(',', "")))
     coin_list.reverse()
     x = 0
     y = 1
     # calculate growth
     for i in range(0, len(coin_list) - 1):
         k = coin_list[x] - coin_list[y]
-        k = (k/coin_list[y])*100
+        k = (k / coin_list[y]) * 100
         coin_list_vs.append(k)
         x += 1
         y += 1
 
     return coin_list_vs
 
-def weekVisualization():
 
-    #get lists with growth in %
-    axe_1 = getGrowth("ada", 7)
-    axe_2 = getGrowth("eos",7)
-    axe_3 = getGrowth("miota",7)
-    axe_4 = getGrowth("nano",7)
-    axe_5 = getGrowth("xrp",7)
-    axe_7 = getGrowth("xmr",7)
-    axe_6 = getGrowth("eth",7)
+def week_visualization():
+    # get lists with growth in %
+    axe_1 = get_growth("ada", 7)
+    axe_2 = get_growth("eos", 7)
+    axe_3 = get_growth("miota", 7)
+    axe_4 = get_growth("nano", 7)
+    axe_5 = get_growth("xrp", 7)
+    axe_7 = get_growth("xmr", 7)
+    axe_6 = get_growth("eth", 7)
 
     # Days
     x = ["Monday", "Tuesday", "Wednesday",
@@ -73,41 +72,40 @@ def weekVisualization():
     plt.title("growth of the last 7 days in percent", color="#F5F8FA")
 
     # change color of fond in legend
-    l = plt.legend(loc='upper left',facecolor="#14171A", frameon=False)
+    l = plt.legend(loc='upper left', facecolor="#14171A", frameon=False)
     for text in l.get_texts():
         text.set_color("#F5F8FA")
     plt.savefig("grow.png", bbox_inches="tight", dpi=300)
 
-def getGrowthOverall(coin,days):
-    cluster = pymongo.MongoClient(
-        'mongodb+srv://Fynn:MSJIS0b9WfKtWqq2@cluster0.jqir5.mongodb.net/Coins?retryWrites=true&w=majority')
+
+def get_growth_overall(coin, days):
+    cluster = pymongo.MongoClient(getenv("pymongoClient"))
     db = cluster['Coins']
 
     coin_db = db[coin]
     coin_list = []
-    coin_list_vs = []
 
     coin_data = coin_db.find().sort('_id', -1).limit(int(days) + 1)
     for i in coin_data:
         coin_list.append(float(i['value']))
     coin_list.reverse()
-    k = coin_list[0] - coin_list[len(coin_list)-1]
-    k = round((k / coin_list[len(coin_list)-1]) * 100, 2)
+    k = coin_list[0] - coin_list[len(coin_list) - 1]
+    k = round((k / coin_list[len(coin_list) - 1]) * 100, 2)
     if k > 0:
         return "+" + str(k)
     else:
         return str(k)
 
-def textWeek():
-    text = f"""{TextBegin()}
-ETH: {getGrowthOverall("eth", 7)}%
-XRP: {getGrowthOverall("xrp", 7)}%
-XMR: {getGrowthOverall("xmr", 7)}%
-EOS: {getGrowthOverall("eos", 7)}%
-ADA: {getGrowthOverall("ada", 7)}%
-IOTA: {getGrowthOverall("miota", 7)}%
-NANO: {getGrowthOverall("nano", 7)}% \n
-{Hashtag()}
+
+def text_week():
+    text = f"""{text_begin()}
+ETH: {get_growth_overall("eth", 7)}%
+XRP: {get_growth_overall("xrp", 7)}%
+XMR: {get_growth_overall("xmr", 7)}%
+EOS: {get_growth_overall("eos", 7)}%
+ADA: {get_growth_overall("ada", 7)}%
+IOTA: {get_growth_overall("miota", 7)}%
+NANO: {get_growth_overall("nano", 7)}% \n
+{random_hashtag()}
 """
     return text
-
