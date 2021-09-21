@@ -1,28 +1,23 @@
-from bs4 import BeautifulSoup
-import requests
+from requests import Session
+import json
 
-def getPrice(coin) -> str:
-    coin = coin.lower()
-    names = {
-        "eth" : "ethereum",
-        "btc" : "bitcoin",
-        "ada" : "cardano",
-        "xmr" : "monero",
-        "miota" : "iota"
+
+def get_price(coin: str):
+    url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest"
+    parameters = {
+        "symbol": coin,
+        "convert": "USD"
     }
-    if coin in names:
-        coin = names[coin]
-    price = "0"
-    while price == "0":
-        #getting whole website as text
-        source = requests.get(f"https://coinmarketcap.com/currencies/{coin}/")
-        source = source.text
-        soup = BeautifulSoup(source, "lxml")
-        #find div with class x
-        information = soup.find("div", class_="priceValue___11gHJ")
-        #seperate text from html, remove $ sign
-        price =information.text[1:].replace(",","")
-    return price
+    headers = {
+        "Accepts": "application/json",
+        "X-CMC_PRO_API_KEY": "1aaed42c-9dca-4f39-82dd-06c0e5171446"
+    }
+    session = Session()
+    session.headers.update(headers)
+    response = session.get(url, params=parameters).text
+
+    # convert json to python and access the dict
+    return round(json.loads(response)["data"][str(coin)]["quote"]["USD"]["price"], 2)
 
 
 
