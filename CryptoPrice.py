@@ -1,5 +1,6 @@
 from requests import Session
 import json
+from os import getenv
 
 def get_price(coin: str):
     url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest"
@@ -9,7 +10,7 @@ def get_price(coin: str):
     }
     headers = {
         "Accepts": "application/json",
-        "X-CMC_PRO_API_KEY": "1aaed42c-9dca-4f39-82dd-06c0e5171446"
+        "X-CMC_PRO_API_KEY": getenv("api-key")
     }
     session = Session()
     session.headers.update(headers)
