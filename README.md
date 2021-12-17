@@ -3,8 +3,7 @@
 
 Hey, thats my first bot...
 Dont forget to check it out on Twitter @ClimateCoin_Bot :)
-
-Dont forget to check it out on Twitter [@ClimateCoin_Bot](https://twitter.com/ClimateCoin_Bot) :)
+(its not online anymore)
 
 
 # Setup:
